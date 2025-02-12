@@ -8,6 +8,11 @@ provider "aws" {
 resource "aws_s3_bucket" "tony-web-app-a" {
   bucket = "tony-web-app-a"  # Bucket name
   acl    = "private"         # Only owner has access
+}
+
+# Enable versioning for Tony's Web App A bucket
+resource "aws_s3_bucket_versioning" "tony-web-app-a" {
+  bucket = aws_s3_bucket.tony-web-app-a.id
   versioning_configuration {
     status = "Enabled"
   }
@@ -17,6 +22,11 @@ resource "aws_s3_bucket" "tony-web-app-a" {
 resource "aws_s3_bucket" "tony-web-app-b" {
   bucket = "tony-web-app-b"  # Bucket name
   acl    = "private"         # Only owner has access
+}
+
+# Enable versioning for Tony's Web App B bucket
+resource "aws_s3_bucket_versioning" "tony-web-app-b" {
+  bucket = aws_s3_bucket.tony-web-app-b.id
   versioning_configuration {
     status = "Enabled"
   }
@@ -58,7 +68,7 @@ POLICY
 
 # S3 Bucket Policy for Tony's Web App B
 resource "aws_s3_bucket_policy" "tony-web-app-b" {
-  bucket = aws_s3_bucket.tony-web-app-b.id  # Apply the policy to this bucket
+  bucket = aws_s3_bucket.tony-web-app-b.id
 
   policy = <<POLICY
 {
@@ -70,9 +80,9 @@ resource "aws_s3_bucket_policy" "tony-web-app-b" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::tony-web-app-b/*",  # Correctly referencing "tony-web-app-b"
+      "Resource": "arn:aws:s3:::tony-web-app-b/*",
       "Condition": {
-        "IpAddress": {"aws:SourceIp": "24.85.136.163/32"}
+        "IpAddress": { "aws:SourceIp": "24.85.136.163/32" }
       }
     },
     {
@@ -80,9 +90,9 @@ resource "aws_s3_bucket_policy" "tony-web-app-b" {
       "Effect": "Deny",
       "Principal": "*",
       "Action": "s3:*",
-      "Resource": "arn:aws:s3:::tony-web-app-b/*",  # Correctly referencing "tony-web-app-b"
+      "Resource": "arn:aws:s3:::tony-web-app-b/*",
       "Condition": {
-        "IpAddress": {"aws:SourceIp": "0.0.0.0/0"}
+        "IpAddress": { "aws:SourceIp": "0.0.0.0/0" }
       }
     }
   ]
