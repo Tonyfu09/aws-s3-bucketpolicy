@@ -9,8 +9,16 @@ Utilize Terraform to centrally manage S3 buckets and their respective bucket pol
 2. Execute the terrform to bulid the user base on the config in main.tf
 3. Verify status in the file
 
-## Content that includes
-- VPC created for departnment, aws_vpc
-- subnet under vpc
-- static internal IP address of the for webserver
-- EC2 for webserver 01
+## Optional configuration
+
+### Enable Versioning in bucket resource
+```hcl
+resource "aws_s3_bucket" "tony-web-app-a" {
+  bucket           = "tony-web-app-a"
+  versioning {
+    enabled = true
+  }
+}
+```
+- 
+- 
